@@ -4,9 +4,18 @@ use CodeIgniter\Controller;
 
 class Dashboard extends Controller
 {
+
     public function index()
     {
         $session = session();
-        echo "Welcome back, ".$session->get('user_name');
+        $db      = \Config\Database::connect();
+        $data['title'] = "E-Kliping | Diskominfo Kabupaten Probolinggo";
+        $data['session'] = $session;
+        $data['media'] = $db->query("SELECT * FROM media ORDER BY id_media ASC")->getResult();
+        echo view('global/header', $data);
+        echo view('global/sidebar');
+        echo view('global/topbar', $data);
+        echo view('admin/dashboard', $data);
+        echo view('global/footer');
     }
 }
